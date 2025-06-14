@@ -41,7 +41,9 @@
   <img id="cake" src="pastabirparca.png" alt="Pasta" />
   <p id="message">TADI NASILDII DUR AKLIMA SENIN VE BENIM HATIRALARIMIZ GELDII</p>
 
+  <!-- Müzikler -->
   <audio id="eatSound" src="minecraft-eat.mp3" preload="auto"></audio>
+  <audio id="finalMusic" src="Mutlu Yıllar MİRA -İsme Özel Doğum Günü Şarkısı.mp3" preload="auto"></audio>
 
   <canvas id="confetti"></canvas>
 
@@ -51,21 +53,28 @@
     "pastabirparca.png",             // 0
     "yenmispasta-1.png",             // 1
     "yenmispasta-2.png",             // 2
-    "yenmispastasadecekiraz.png",  // 3
-    "bosluk.png",                     // 4
-    "mc.png", "mc1.png", "mc2.png",   // 5-7
-    "mc3.png", "mc4.png", "mc5.png"   // 8-10
+    "yenmispastasadecekiraz.png",    // 3
+    "bosluk.png",                    // 4
+    "mc.png", "mc1.png", "mc2.png",  // 5-7
+    "mc3.png", "mc4.png", "mc5.png"  // 8-10
   ];
 
   function eatCake() {
     const img = document.getElementById("cake");
     const msg = document.getElementById("message");
     const sound = document.getElementById("eatSound");
+    const finalMusic = document.getElementById("finalMusic");
 
-    // 🎵 Sadece pasta yenme aşamasında ses çal
+    // Pasta yenme aşaması
     if (stage < 4) {
       sound.currentTime = 0;
       sound.play();
+    }
+
+    // Son foto gelince müzik çal
+    if (stage === photos.length - 1) {
+      finalMusic.currentTime = 0;
+      finalMusic.play();
     }
 
     if (stage < photos.length - 1) {
