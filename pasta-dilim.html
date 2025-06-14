@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mira İçin Sürpriz</title>
+  <style>
+    body {
+      background-color: #fff0f5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      font-family: sans-serif;
+    }
+    img {
+      max-width: 60%;
+      cursor: pointer;
+      transition: opacity 0.5s;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      border-radius: 12px;
+    }
+    #message {
+      margin-top: 20px;
+      font-size: 22px;
+      color: #b30059;
+      display: none;
+      text-align: center;
+    }
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: -1;
+    }
+  </style>
+</head>
+<body onclick="eatCake()">
+
+  <img id="cake" src="pastabirparca.png" alt="Pasta" />
+  <p id="message">TADI NASILDII DUR AKLIMA SENIN VE BENIM HATIRALARIMIZ GELDII</p>
+
+  <audio id="eatSound" src="minecraft-eat.mp3" preload="auto"></audio>
+
+  <canvas id="confetti"></canvas>
+
+<script>
+  let stage = 0;
+  const photos = [
+    "pastabirparca.png",             // 0
+    "yenmispasta-1.png",             // 1
+    "yenmispasta-2.png",             // 2
+    "yenmispastasadecekiraz.png",  // 3
+    "bosluk.png",                     // 4
+    "mc.png", "mc1.png", "mc2.png",   // 5-7
+    "mc3.png", "mc4.png", "mc5.png"   // 8-10
+  ];
+
+  function eatCake() {
+    const img = document.getElementById("cake");
+    const msg = document.getElementById("message");
+    const sound = document.getElementById("eatSound");
+
+    // 🎵 Sadece pasta yenme aşamasında ses çal
+    if (stage < 4) {
+      sound.currentTime = 0;
+      sound.play();
+    }
+
+    if (stage < photos.length - 1) {
+      stage++;
+      img.src = photos[stage];
+
+      if (stage === 4) {
+        msg.style.display = "block";
+      }
+    }
+  }
+
+  // 🎉 Konfeti efekti
+  const canvas = document.getElementById('confetti');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  let confettis = [];
+  for (let i = 0; i < 200; i++) {
+    confettis.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height - canvas.height,
+      r: Math.random() * 6 + 4,
+      d: Math.random() * 100,
+      color: `hsl(${Math.random() * 360}, 100%, 60%)`,
+      tilt: Math.floor(Math.random() * 10) - 5
+    });
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    confettis.forEach(c => {
+      ctx.beginPath();
+      ctx.fillStyle = c.color;
+      ctx.ellipse(c.x, c.y, c.r, c.r / 2, Math.PI / 4, 0, 2 * Math.PI);
+      ctx.fill();
+    });
+    update();
+    requestAnimationFrame(draw);
+  }
+
+  function update() {
+    confettis.forEach(c => {
+      c.y += 2;
+      c.x += Math.sin(c.d);
+      if (c.y > canvas.height) {
+        c.y = 0;
+        c.x = Math.random() * canvas.width;
+      }
+    });
+  }
+
+  draw();
+</script>
+
+</body>
+</html>
